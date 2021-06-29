@@ -1,0 +1,125 @@
+,<div class="container mt-5">
+  <div class="card text-center m-3">
+    <div class="card-header row-6">
+
+        <h3>Productos disponibles</h3>
+        <br>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" [formControl]="buscarPalabra" placeholder="buscar" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="buscar()">Buscar</button>
+          <button class="btn btn-outline-warning my-2 my-sm-0" (click) = "quitarBusqueda()">Quitar</button>
+        </form>
+
+      
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-4" *ngFor="let producto of listaProductos | slice:pageMin:pageMax let i = index">
+          <img width="250" height="250" src="{{producto.img}}"><br>
+          <h5 class="fw-bolder">{{producto.nombre}}</h5>
+          <p>{{producto.descripcion}}</p>
+          <span>{{producto.precio | currency:'CLP'}}</span><br>
+          <a data-toggle="modal" (click)=agregarCarrito(producto) class="btn btn-primary">Agregar al carrito</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer pb-0 pt-3">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" (click)="changePage(0)">1</a></li>
+          <li class="page-item"><a class="page-link" (click)="changePage(1)">2</a></li>
+          <li class="page-item"><a class="page-link" (click)="changePage(2)">3</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-outline-danger fixed-bottom flotar" data-bs-target="#exampleModal" (click)="carritoTieneProds()" data-bs-toggle="modal">
+  <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-cart"
+    viewBox="0 0 16 16">
+    <path
+      d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+  </svg>
+  ver carrito <span *ngIf="carrito.length>0">({{carrito.length}})</span>
+</button>
+
+<!-- Modal Carrito de compra -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="exampleModalLabel">Carrito de compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-image">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Producto</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Total</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of carrito; let j = index">
+              <td class="w-25">
+                <img src="{{p.img}}" class="img-fluid img-thumbnail" alt="Sheep">
+              </td>
+              <td>{{p.nombre}}</td>
+              <td>{{p.precio}}</td>
+              <td style="width:15%;"><input type="number" class="form-control" [formControl]="cantidad" id="input1"
+                  placeholder="{{productosCantidad.get(p.id)}}"></td>
+              <td>{{p.precio*productosCantidad.get(p.id)}}</td>
+              <td>
+                <button class="btn btn-danger btn-sm" (click)="eliminarProducto(p)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-x-square" viewBox="0 0 16 16">
+                    <path
+                      d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                    <path
+                      d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                  </svg>
+                </button>
+                <button href="#" class="btn btn-success btn-sm" (click)="aceptarCantidad(p)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-check-square" viewBox="0 0 16 16">
+                    <path
+                      d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                    <path
+                      d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th>Total:</th>
+              <td>{{totalDinero | currency:'CLP'}}</td>
+              <td></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button data-bs-dismiss="modal" (click)="carritoTieneProds()" type="button" routerLink="/pago" class="btn btn-primary">Continuar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="my-5 pt-5 text-muted text-center text-small">
+  <p class="mb-1">© 2021 Smart Components</p>
+  <ul class="list-inline">
+    <li class="list-inline-item"><a href="#">Instagram</a></li>
+    <li class="list-inline-item"><a href="#">Facebook</a></li>
+    <li class="list-inline-item"><a href="#">Twitter</a></li>
+  </ul>
+</footer>

@@ -1,0 +1,11 @@
+.flotar {
+    bottom: 50px;
+    margin: 10px;
+}
+
+a { cursor: pointer; }
+
+.pagination {
+    justify-content: center;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,32 @@
+<div class="container col-4">
+    <h3>Ingrese datos de envío</h3>
+    <form>
+
+        <input class="form-control" type="text" [formControl]="pais" placeholder="Ingrese País" required>
+
+            <span style="color:red">{{alertPais}}</span>
+
+        <br>
+        <input class="form-control" type="text" [formControl]="calle" placeholder="ingrese calle" required>
+
+            <span style="color:red">{{alertCalle}}</span>
+
+        <br>
+        <input class="form-control" type="text" [formControl]="ciudad" placeholder="ingrese ciudad"
+            required>
+
+            <span style="color:red">{{alertCiudad}}</span>
+
+        <br>
+        <input class="form-control" type="texr" [formControl]="region" placeholder="ingrese región" required>
+
+            <span style="color:red">{{alertRegion}}</span>
+
+        <br>
+        <input class="form-control" type="texr" [formControl]="codigoPostal" placeholder="ingrese código postal" required>
+
+            <span style="color:red">{{alertCodigo}}</span>
+            <br>
+        <button class="btn btn-primary form-control" type="submit" (click) = "validar()" >Continuar</button>
+    </form>
+</div>

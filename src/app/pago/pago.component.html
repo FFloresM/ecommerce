@@ -1,0 +1,37 @@
+<div class="container col-4">
+    <h3>Ingrese datos de tarjeta</h3>
+    <form>
+
+        <select class="form-control" id="select1" [formControl]="tipoTarjeta" required>
+            <option disabled selected>Selecciona tipo tarjeta</option>
+            <option value="debito">Débito</option>
+            <option value="credito">Crédito</option>
+        </select>
+
+            <span style="color:red">{{alertTipo}}</span>
+
+        <br>
+        <input class="form-control" type="text" [formControl]="nombre" placeholder="Ingrese nombre titular" required>
+
+            <span style="color:red">{{alertNombre}}</span>
+
+        <br>
+        <input class="form-control" type="text" [formControl]="numeroTarjeta" placeholder="numero de tarjeta" required>
+
+            <span style="color:red">{{alertNumero}}</span>
+
+        <br>
+        <input class="form-control" type="text" [formControl]="codigoSeguridad" placeholder="Código de seguridad CVV"
+            required>
+
+            <span style="color:red">{{alertCodigo}}</span>
+
+        <br>
+        <input class="form-control" type="texr" [formControl]="mesAnio" placeholder="mm/aa" required>
+
+            <span style="color:red">{{alertFecha}}</span>
+
+        <br>
+        <button class="btn btn-primary form-control" type="submit" (click) = "validar()" >Continuar</button>
+    </form>
+</div>
